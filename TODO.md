@@ -1,4 +1,5 @@
 # Todos
 
-- [ ] Better card hovering
+- [ ] Grid view
+- [-] Better card hovering
 - [x] Exclude tokens

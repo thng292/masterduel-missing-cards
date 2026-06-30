@@ -331,31 +331,31 @@ export default function SetDetail(props: SetDetailProps) {
             </Show>
           </Show>
         </div>
-      </dialog>
 
-      {/* Floating Hover Card Popover */}
-      <Show when={hoveredCard()}>
-        {(card) => (
-          <div
-            class="card-detail-popover visible"
-            style={{
-              left: `${popoverPos().x}px`,
-              top: `${popoverPos().y}px`
-            }}
-          >
-            <img
-              src={getProxyImageUrl(card().id, 'large')}
-              alt={card().name}
-              class="popover-image"
-            />
-            <h4 style="font-size: 1.1rem; margin-bottom: 0.25rem;">{card().name}</h4>
-            <div style="font-size: 0.75rem; color: var(--accent); margin-bottom: 0.5rem; font-weight: 600;">
-              {card().type} {card().attribute ? `| ${card().attribute}` : ''} {card().race ? `| ${card().race}` : ''}
+        {/* Floating Hover Card Popover */}
+        <Show when={hoveredCard()}>
+          {(card) => (
+            <div
+              class="card-detail-popover visible"
+              style={{
+                left: `${popoverPos().x}px`,
+                top: `${popoverPos().y}px`
+              }}
+            >
+              <img
+                src={getProxyImageUrl(card().id, 'large')}
+                alt={card().name}
+                class="popover-image"
+              />
+              <h4 style="font-size: 1.1rem; margin-bottom: 0.25rem;">{card().name}</h4>
+              <div style="font-size: 0.75rem; color: var(--accent); margin-bottom: 0.5rem; font-weight: 600;">
+                {card().type} {card().attribute ? `| ${card().attribute}` : ''} {card().race ? `| ${card().race}` : ''}
+              </div>
+              <div class="popover-desc">{card().desc}</div>
             </div>
-            <div class="popover-desc">{card().desc}</div>
-          </div>
-        )}
-      </Show>
+          )}
+        </Show>
+      </dialog>
     </>
   );
 }
