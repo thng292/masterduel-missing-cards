@@ -1,21 +1,32 @@
-name: Weekly Card Data Sync
+name: Update Data & Deploy
 
 on:
   schedule:
-    # Run every Sunday at 00:00 UTC
-    - cron: '0 0 * * 0'
+    - cron: '0 0 * * *'
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: 'pages'
+  cancel-in-progress: true
 
 jobs:
-  update-data:
+  update-and-deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
-      - name: Setup Node.js
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -24,7 +35,7 @@ jobs:
         run: npm ci
       - name: Fetch and compile data
         run: npm run update-data
-      - name: Commit and push changes
+      - name: Commit and push data changes
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
@@ -35,3 +46,14 @@ jobs:
             git commit -m "Auto-update Yu-Gi-Oh! card dataset"
             git push
           fi
+      - name: Build
+        run: npm run build
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './dist'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
