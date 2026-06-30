@@ -42,7 +42,7 @@ async function main() {
     console.log('=== Starting Yu-Gi-Oh! Missing Cards Data Fetch ===');
     
     // 1. Fetch TCG Sets list
-    const setsList = await fetchData('https://db.ygoprodeck.com/api/v7/cardsets.php');
+    const setsList = await fetchData('https://db.ygoprodeck.com/api/v7/cardsets.php?format=tcg');
     console.log(`Loaded ${setsList.length} sets from TCG database.`);
 
     // 2. Fetch Master Duel legal cards
@@ -62,7 +62,7 @@ async function main() {
 
     for (const card of allCards) {
       // Determine if missing from Master Duel
-      const isMissing = !mdCardIds.has(card.id);
+      const isMissing = !mdCardIds.has(card.id) && card.type != "Token";
       
       // Store basic card info for chunking
       const cardInfo = {
